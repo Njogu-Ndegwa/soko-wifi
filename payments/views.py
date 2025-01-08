@@ -59,7 +59,7 @@ def initiate_stk_push(request):
         "PartyA": phone_number,          # Phone number paying
         "PartyB": settings.MPESA_SHORTCODE,  # Business shortcode
         "PhoneNumber": phone_number,
-        "CallBackURL": "https://5edb-105-163-158-143.ngrok-free.app/api/payment-callback/",  # update with your actual endpoint
+        "CallBackURL": "https://soko.ufundi.co.ke/api/payment-callback/",  # update with your actual endpoint
         "AccountReference": reference,   # reference used for the transaction
         "TransactionDesc": "Payment via STK push"
     }
