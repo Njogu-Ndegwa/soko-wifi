@@ -263,6 +263,7 @@ def add_whitelist_rule(mikrotik_ip, username, password, mac, ip):
     Connects to the Mikrotik router and adds a rule (for example, to an address list called 'whitelist')
     that permits the given IP address (with a comment containing the MAC) access.
     """
+    print("-----266----")
     connection = routeros_api.RouterOsApiPool(
         host=mikrotik_ip, 
         username=username, 
@@ -270,7 +271,10 @@ def add_whitelist_rule(mikrotik_ip, username, password, mac, ip):
         port=8728,            # Use the correct API port (default is 8728)
         plaintext_login=True  # Set to False if you use TLS
     )
+    print(connection, "----COnnection")
+    print("-----273----")
     api = connection.get_api()
+    print(api, "Api",flush=True)
     try:
         resource = api.get_resource('/ip/firewall/address-list')
         # This example adds an entry to an address-list named "whitelist".
