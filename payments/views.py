@@ -258,29 +258,51 @@ def mpesa_callback(request):
 
 # --- Helper Functions for Mikrotik API Interaction ---
 
+import routeros_api
+
 def add_whitelist_rule(mikrotik_ip, username, password, mac, ip):
     """
     Connects to the Mikrotik router and adds a rule (for example, to an address list called 'whitelist')
     that permits the given IP address (with a comment containing the MAC) access.
     """
     print("-----266----")
-    connection = routeros_api.RouterOsApiPool(
-        host=mikrotik_ip, 
-        username=username, 
-        password=password, 
-        port=8728,            # Use the correct API port (default is 8728)
-        plaintext_login=True  # Set to False if you use TLS
-    )
-    print(connection, "----COnnection")
-    print("-----273----")
-    api = connection.get_api()
-    print(api, "Api",flush=True)
+    connection = None  # We'll define this first so we can disconnect in 'finally'.
+    
     try:
+        # 1. Attempt to open a connection (and authenticate) to your Mikrotik.
+        connection = routeros_api.RouterOsApiPool(
+            host=mikrotik_ip,
+            username=username,
+            password=password,
+            port=8728,            # Default API port
+            plaintext_login=True  # Set to False if you're using TLS on port 8729
+        )
+        print(connection, "----Connection----")
+        print("-----273----")
+        
+        # 2. Get the API object
+        api = connection.get_api()
+        print(api, "Api", flush=True)
+        
+        # 3. Perform the actual MikroTik call to add an address list entry
         resource = api.get_resource('/ip/firewall/address-list')
-        # This example adds an entry to an address-list named "whitelist".
         resource.add(list="whitelist", address=ip, comment=mac)
+        print(f"Successfully added {ip} to 'whitelist' with MAC comment '{mac}'.")
+    
+    except routeros_api.exceptions.RouterOsApiConnectionError as e:
+        print("RouterOsApiConnectionError:", e)
+    except routeros_api.exceptions.RouterOsApiConnectionClosedError as e:
+        print("RouterOsApiConnectionClosedError:", e)
+    except Exception as e:
+        # Catch any other unanticipated errors.
+        print("Unexpected error adding whitelist rule:", e)
+    
     finally:
-        connection.disconnect()
+        # 4. Always disconnect if connection was established
+        if connection:
+            connection.disconnect()
+            print("Disconnected from Mikrotik.")
+
 
 
 def remove_whitelist_rule(mikrotik_ip, username, password, mac, ip):
