@@ -4,6 +4,7 @@ class Payment(models.Model):
     """
     Holds M-Pesa payment records
     """
+    plan = models.ForeignKey('internetplans.InternetPlan', on_delete=models.PROTECT, blank=True, null=True)
     phone_number = models.CharField(max_length=20)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     reference = models.CharField(max_length=50, blank=True, null=True)

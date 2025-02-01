@@ -4,6 +4,8 @@ djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 requests = "*"
 django-cors-headers = "*"
+django-background-tasks = "*"
+routeros-api = "*"
 
 [dev-packages]
 

@@ -32,8 +32,10 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'rest_framework',
-     'corsheaders',
+    'corsheaders',
     'payments',
+    'internetplans',
+    'background_task',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
