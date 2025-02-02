@@ -6,6 +6,8 @@ requests = "*"
 django-cors-headers = "*"
 django-background-tasks = "*"
 routeros-api = "*"
+sshtunnel = "*"
+paramiko = "*"
 
 [dev-packages]
 
